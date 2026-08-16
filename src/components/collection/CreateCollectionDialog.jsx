@@ -1,8 +1,9 @@
-import Modal from "../ui/Modal";
-import CollectionForm from "./CollectionForm";
+import Modal from '../ui/Modal';
+import CollectionForm from './CollectionForm';
 
-import useProjectStore from "../../store/projectStore";
-import useCollectionStore from "../../store/collectionStore";
+import useProjectStore from '../../store/projectStore';
+import useCollectionStore from '../../store/collectionStore';
+import { toast } from 'react-toastify';
 
 export default function CreateCollectionDialog({ open, onClose, setExpanded }) {
 	const { selectedProject } = useProjectStore();
@@ -16,14 +17,17 @@ export default function CreateCollectionDialog({ open, onClose, setExpanded }) {
 			await loadCollections();
 			setExpanded(true);
 		} catch (err) {
-			console.error("Error creating collection:", err);
+			toast.error(err);
 		}
 
 		onClose();
 	}
 
 	return (
-		<Modal open={open} title='Create Collection' onClose={onClose}>
+		<Modal
+			open={open}
+			title="Create Collection"
+			onClose={onClose}>
 			<CollectionForm onSubmit={handleCreate} />
 		</Modal>
 	);

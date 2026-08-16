@@ -106,6 +106,7 @@ export default function ProjectItem({ project }) {
 			<CreateCollectionDialog
 				open={openCollectionDialog}
 				onClose={() => setOpenCollectionDialog(false)}
+				setExpanded={setExpanded}
 			/>
 		</div>
 	);

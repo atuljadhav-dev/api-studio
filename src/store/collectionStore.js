@@ -1,4 +1,5 @@
-import { create } from "zustand";
+import { toast } from 'react-toastify';
+import { create } from 'zustand';
 
 const useCollectionStore = create((set) => ({
 	collections: [],
@@ -10,28 +11,19 @@ const useCollectionStore = create((set) => ({
 
 		const result = await window.api.collection.getAll();
 		if (result.success) {
-			set({
-				collections: result.data,
-				loading: false,
-			});
+			set({ collections: result.data, loading: false });
 		} else {
-			set({
-				loading: false,
-			});
+			set({ loading: false });
 		}
 	},
 	createCollection: async (projectId, name) => {
-		
-		const result = await window.api.collection.create({
-			projectId,
-			name,
-		});
+		const result = await window.api.collection.create({ projectId, name });
 		if (result.success) {
 			set((state) => ({
 				collections: [...state.collections, result.data],
 			}));
 		} else {
-			console.error("Error creating collection:", result.message);
+			toast.error(result.message);
 		}
 	},
 	deleteCollection: async (id) => {
@@ -44,9 +36,7 @@ const useCollectionStore = create((set) => ({
 		const result = await window.api.collection.update(
 			id,
 
-			{
-				name,
-			},
+			{ name },
 		);
 
 		if (result.success) {
@@ -58,9 +48,7 @@ const useCollectionStore = create((set) => ({
 		}
 	},
 	selectCollection: async (collection) => {
-		set({
-			selectedCollection: collection,
-		});
+		set({ selectedCollection: collection });
 	},
 }));
 

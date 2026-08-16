@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { create } from "zustand";
 
 const useProjectStore = create((set) => ({
@@ -23,6 +24,8 @@ const useProjectStore = create((set) => ({
 				projects: [...state.projects, result.data],
 				selectedProject: result.data,
 			}));
+		}else {
+			toast.error(result.message);
 		}
 	},
 

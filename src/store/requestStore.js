@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import useWorkspaceStore from "./workspaceStore";
+import { toast } from "react-toastify";
 
 const useRequestStore = create((set, get) => ({
 	requests: [],
@@ -34,6 +35,8 @@ const useRequestStore = create((set, get) => ({
 				selectedRequest: result.data,
 			}));
 			return result.data;
+		}else {
+			toast.error(result.message);
 		}
 		return null;
 	},

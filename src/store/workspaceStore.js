@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import useRequestStore from './requestStore';
+import { toast } from 'react-toastify';
 const STORAGE_KEY = 'workspace';
 
 function saveWorkspace(tabs, activeTabId) {
@@ -113,9 +114,8 @@ const useWorkspaceStore = create((set, get) => ({
 					method: request.method,
 					request,
 				});
-				console.log('Restored tab:', tab.id, request);
 			} catch (err) {
-				console.error('Failed to restore tab:', err);
+				toast.error('Failed to restore tab:', err);
 			}
 		}
 		const activeTabId =
