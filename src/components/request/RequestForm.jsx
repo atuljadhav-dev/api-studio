@@ -4,6 +4,7 @@ import Button from "../ui/Button";
 import Input from "../ui/Input";
 import MethodSelect from "./MethodSelect";
 import useRequestStore from "../../store/requestStore";
+import { toast } from "react-toastify";
 export default function RequestForm({ onSubmit }) {
 	const [name, setName] = useState("");
 
@@ -14,7 +15,10 @@ export default function RequestForm({ onSubmit }) {
 	function handleSubmit(e) {
 		e.preventDefault();
 
-		if (!name.trim()) return;
+		if (!name.trim()){
+			toast.error("Name is required");
+			return;
+		}
 
 		onSubmit({
 			name,
