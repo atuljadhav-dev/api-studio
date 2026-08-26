@@ -1,9 +1,9 @@
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import MethodSelect from "./MethodSelect";
 import useRequestStore from "../../store/requestStore";
+import useProjectStore from "../../store/projectStore";
 import { toast } from "react-toastify";
 export default function RequestForm({ onSubmit }) {
 	const [name, setName] = useState("");
@@ -12,10 +12,32 @@ export default function RequestForm({ onSubmit }) {
 
 	const [url, setUrl] = useState("");
 	const { requests } = useRequestStore();
+	const { selectedProject } = useProjectStore();
+	const [filteredRequests, setFilteredRequests] = useState(requests);
+	useEffect(() => {
+		let filtered = requests.filter(
+			(request) => request.projectId === selectedProject?._id,
+		);
+		setFilteredRequests(
+			filtered.length > 0
+				? filtered
+				: [
+						{ url: "http://localhost:3000", _id: "1" },
+						{ url: "http://localhost:3001", _id: "2" },
+						{ url: "http://localhost:3002", _id: "3" },
+						{ url: "http://localhost:5000", _id: "4" },
+						{ url: "http://localhost:5001", _id: "5" },
+						{ url: "http://localhost:5002", _id: "6" },
+						{ url: "http://localhost:8000", _id: "7" },
+						{ url: "http://localhost:8001", _id: "8" },
+						{ url: "http://localhost:8002", _id: "9" },
+					],
+		);
+	}, [selectedProject]);
 	function handleSubmit(e) {
 		e.preventDefault();
 
-		if (!name.trim()){
+		if (!name.trim()) {
 			toast.error("Name is required");
 			return;
 		}
@@ -94,7 +116,7 @@ export default function RequestForm({ onSubmit }) {
 					list="url-suggestions"
 				/>
 				<datalist id="url-suggestions">
-					{requests.map((request) => (
+					{filteredRequests.map((request) => (
 						<option
 							key={request._id}
 							value={request.url}
